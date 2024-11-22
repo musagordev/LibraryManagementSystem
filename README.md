@@ -22,7 +22,7 @@ This project is a Python-based Library Management System that allows users to ma
  - **main()** Function: Provides a menu-driven interface for interacting with the library.
 
 # How to Run
-1. Clone this repository or copy the code into a Python file, e.g., library_system.py.
+1. Clone this repository
    
 `git clone musagordev/LibraryManagementSystem.git`
 
