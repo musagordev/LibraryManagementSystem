@@ -16,6 +16,7 @@ class Library: #Create a Library class for holding and managing information.
     #Books will be stored in List object
     def __init__(self):
         self.books = [] 
+        self.logs = [] #Creating logs for user action for check.
     
     #Loading library from json file.  
     def load_books(self, json_file):
@@ -25,6 +26,7 @@ class Library: #Create a Library class for holding and managing information.
             print('2. No')
             choice = input('Your choice (1-2): ')
             if choice == '1':
+                self.logs.append(f'# Creating a new file: {json_file} created successfully.')
                 return []    #We will create empty list. This list will store json objects in library system.
         try: #We will use try-except block here to handle file not found error. If user didn't want to create new file we will print error message and return None.
             with open(json_file, 'r') as file:
@@ -39,6 +41,7 @@ class Library: #Create a Library class for holding and managing information.
     def save_books(self, json_file):
         with open(json_file,'w') as file:
             json.dump([book.__dict__ for book in self.books], file, indent=4) #Converting book objects to json file
+            self.logs.append(f'Saving a file: # {json_file} saved successfully.')
 
     #Binary search for looking for ID. Our json file will store books according ids with ascending order. 
     #We will search our book_id with binary search to drop time complexity to O(logn). 
@@ -98,6 +101,7 @@ class Library: #Create a Library class for holding and managing information.
         book_id = self.generate_id()
         new_book = Book(book_id, title, author, year)
         self.books.append(new_book)
+        self.logs.append(f'# Adding a new book: ID: {new_book.id}, Title: {new_book.title}, Author: {new_book.author} added to library successfully.')
         print(f"\n{title} added to library! ID: {book_id}\n")
         print('Do you like add another book?\n') #Asking user if he wants to add another book.
         print('1. Yes')
@@ -128,8 +132,9 @@ class Library: #Create a Library class for holding and managing information.
             final_choice = input(f"\nAre you sure that you want to delete {title}? Enter 'Y' or 'N':" ).strip() #Confirmation process before deleting book. We are asking Y or N here differently.
             if final_choice.capitalize() == 'Y':
                 self.books.remove(book)
+                self.logs.append(f'Deleting a book: # ID: {book.id}, Title: {book.title}, Author: {book.author} deleted from library successfully.')
                 print(f'{title} deleted from library successfully')
-            elif final_choice.capitalize() == 'No':
+            elif final_choice.capitalize() == 'N':
                 print(f"{title} didn't deleted.")
             else:
                 print('Invalid choice.')
@@ -241,12 +246,14 @@ class Library: #Create a Library class for holding and managing information.
             choice = input('New status:' )
             if choice == '1':
                 book.status = 'In Stock'
+                print(f'\nStatus of {book.title} successfully updated as {book.status}!')
+                self.logs.append(f'# Changing Status of book: {book.title} successfully updated as {book.status}!.')
             elif choice == '2':
                 book.status = 'Issued'
+                print(f'\nStatus of {book.title} successfully updated as {book.status}!')
+                self.logs.append(f'# Changing Status of book: {book.title} successfully updated as {book.status}!.')
             else:
-                'Invalid choice!'
-                
-            print(f'\nStatus of {book.title} successfully updated as {book.status}!')
+                'Invalid choice!'          
             
         print('\nDo you want to change status of another book?') #Asking user if user wants to change status of another book.
         print('1. Yes')
@@ -260,6 +267,16 @@ class Library: #Create a Library class for holding and managing information.
         else: #If user made invalid choice, we are giving feedback to user and redirecting main menu.
             print('Invalid choice! We are redirecting you to Main Menu...\n')
             return 
+
+    #Listing user logs
+    def list_logs(self):
+        if not self.logs: #Check if there are any log in the library.
+            print('\nThere is no book in library!\n')
+            return
+
+        for log in self.logs: #Listing every log with character limit for better interface for user.
+            print(log)
+        leaving=input('\nPress Enter for returning to Main Menu: ')
 
 def main(data='data.json'):
     library = Library()
@@ -278,7 +295,8 @@ def main(data='data.json'):
         print("3. Search a Book")
         print("4. List all the Books")
         print("5. Change the Status of the Book")
-        print("6. Exit")
+        print('6. Show Logs')
+        print("7. Exit")
         
         choice = input("Your choice (1-6): ")
         if choice == '1':
@@ -302,9 +320,27 @@ def main(data='data.json'):
             print("\n---You are in the 'Change the Status of the Book' section.---")
             library.change_status()
         elif choice == '6':
-            print("\nYou leaving the library. Datas are saving...")
-            library.save_books(data_file)
-            break
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print("\n---You are in the 'Logs of the Library' section.---")
+            library.list_logs()
+        elif choice == '7':
+            print("\nYou are leaving the library. Do you want to save your files?\n") #Asking  user to save files before leaving
+            print("1. Yes")
+            print("2. No")
+            choice = (input("Your choice (1-2): ")).strip()
+            if choice == "1":
+                print('Datas are saving...')
+                library.save_books(data_file)
+                break
+            if choice == "2":
+                print("Are you sure that you don't want to save your datas? The data will be lost and will not return back!")  #Confirming user doesn't want to save file.              
+                final_choice = input("Type 'Y' for Yes, Type 'N' for No. Your choice(Y-N): ")
+                if final_choice.capitalize() == 'Y':
+                    break
+                elif final_choice.capitalize() == 'N':
+                    print("You are redirecting to Main Menu...")
+                else:
+                    print('Invalid choice. Please choose what you would like to do from Main Menu. You are redirecting to Main Menu...')
         else:
             print('Invalid choice. Please enter the number corresponding to the action you want to perform. ')
 
