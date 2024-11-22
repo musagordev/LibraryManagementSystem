@@ -16,7 +16,7 @@ class Library: #Create a Library class for holding and managing information.
     #Books will be stored in List object
     def __init__(self):
         self.books = [] 
-        self.logs = [] #Creating logs for user action for check.
+        self.logs = []
     
     #Loading library from json file.  
     def load_books(self, json_file):
@@ -268,7 +268,6 @@ class Library: #Create a Library class for holding and managing information.
             print('Invalid choice! We are redirecting you to Main Menu...\n')
             return 
 
-    #Listing user logs
     def list_logs(self):
         if not self.logs: #Check if there are any log in the library.
             print('\nThere is no book in library!\n')
@@ -289,7 +288,7 @@ def main(data='data.json'):
         if library.books is None:
             break
         print("\n---Library Management System---")
-        print("\nWelcome to the Main Menu.\nPlease enter the number corresponding to the action you want to perform from below list.\n")
+        print("\nWelcome to the Main Menu.\nPlease enter the number corresponding to the action you want to perform from below list. If you need any help please type 'help'\n")
         print("1. Add a Book")
         print("2. Delete a Book")
         print("3. Search a Book")
@@ -298,7 +297,7 @@ def main(data='data.json'):
         print('6. Show Logs')
         print("7. Exit")
         
-        choice = input("Your choice (1-6): ")
+        choice = input("Your choice (1-7): ")
         if choice == '1':
             os.system('cls' if os.name == 'nt' else 'clear')
             print("\n---You are in the 'Add a Book' section.---")
@@ -324,7 +323,7 @@ def main(data='data.json'):
             print("\n---You are in the 'Logs of the Library' section.---")
             library.list_logs()
         elif choice == '7':
-            print("\nYou are leaving the library. Do you want to save your files?\n") #Asking  user to save files before leaving
+            print("\nYou are leaving the library. Do you want to save your files?\n")
             print("1. Yes")
             print("2. No")
             choice = (input("Your choice (1-2): ")).strip()
@@ -333,7 +332,7 @@ def main(data='data.json'):
                 library.save_books(data_file)
                 break
             if choice == "2":
-                print("Are you sure that you don't want to save your datas? The data will be lost and will not return back!")  #Confirming user doesn't want to save file.              
+                print("Are you sure that you don't want to save your datas? The data will be lost and will not return back!")                
                 final_choice = input("Type 'Y' for Yes, Type 'N' for No. Your choice(Y-N): ")
                 if final_choice.capitalize() == 'Y':
                     break
@@ -341,6 +340,13 @@ def main(data='data.json'):
                     print("You are redirecting to Main Menu...")
                 else:
                     print('Invalid choice. Please choose what you would like to do from Main Menu. You are redirecting to Main Menu...')
+        elif choice == 'help':
+            print("\nThis project is a Python-based Library Management System that allows users to manage books in a library.")
+            print("In this program you can drive in the menu with typing corresponding numbers to your choice.")
+            print("For example for adding a new book, you should type '1' which corresponding to adding a new book option in the main menu.")
+            print("If you have more question. Please read README file on 'https://github.com/musagordev/LibraryManagementSystem/blob/main/README.md'")
+
+            leaving=input('\nPress Enter for returning to Main Menu: ')
         else:
             print('Invalid choice. Please enter the number corresponding to the action you want to perform. ')
 
