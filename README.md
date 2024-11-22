@@ -12,6 +12,8 @@ This project is a Python-based Library Management System that allows users to ma
 5. Change Book Status: Update the status of a book (e.g., "In Stock" or "Issued").
 
 6. Data Persistence: Save and load book data in a JSON file for persistent storage
+   
+7. Saving Logs: Save and show user the logs made in library file. 
 
 # Project Structure
 
@@ -62,8 +64,13 @@ This project is a Python-based Library Management System that allows users to ma
 2. Enter the book's unique ID.
 3. Choose a new status ("In Stock" (1) or "Issued" (2).
 
+**Listing Logs**
+1. Choose the "List All Logs" option. (Option 6)
+2. View logs printing on console
+
 **Exit the Library**
-Choose the "Exit" option. (Option 6)
+1. Choose the "Exit" option. (Option 7)
+2. Choose if you would like to save changes before leaving library.
 
 # File Storage
 The program saves all book data to a JSON file (data.json) for persistence. If the file does not exist, the user will be prompted to create a new one.
